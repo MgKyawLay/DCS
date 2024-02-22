@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Orchid\Screens;
+namespace App\Orchid\Screens\Campaign;
 
 use App\Models\Campaign;
 use Illuminate\Http\Request;

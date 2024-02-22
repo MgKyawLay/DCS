@@ -1,13 +1,15 @@
 <?php
 
-namespace App\Orchid\Screens;
+namespace App\Orchid\Screens\Campaign;
 
 use App\Models\Campaign;
+use Barryvdh\Debugbar\Facades\Debugbar;
 use Illuminate\Http\Request;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Fields\DateTimer;
 use Orchid\Screen\Fields\Input;
 use Orchid\Screen\Screen;
+use Orchid\Screen\TD;
 use Orchid\Support\Facades\Layout;
 
 class CampaignEditScreen extends Screen
@@ -17,10 +19,12 @@ class CampaignEditScreen extends Screen
      *
      * @return array
      */
-    public function query(Campaign $campaign): array
+    public function query(int $id)
     {
+        $campaign = Campaign::findOrFail($id);
+        // dd($campaign);
         return [
-            'campaign' => Campaign::find($campaign->id),
+            'campaign' => $campaign,
         ];
     }
 
@@ -49,8 +53,10 @@ class CampaignEditScreen extends Screen
      *
      * @return \Orchid\Screen\Layout[]|string[]
      */
-    public function update(Campaign $campaign, Request $request)
+    public function update(int $id, Request $request)
     {
+        // dd($id);
+        $campaign = Campaign::findOrFail($id);
         $request->validate([
             'campaign.name' => 'required|max: 255',
             'campaign.category' => 'required|max: 255',
@@ -59,10 +65,10 @@ class CampaignEditScreen extends Screen
             'campaign.media' => '',
             'campaign.start_date' => 'required',
             'campaign.end_date' => 'required',
-            'campaign.goal' => 'required',
-            'campaign.raise' => 'required',
+            'campaign.goal_amount' => 'required',
+            'campaign.raise_amount' => 'required',
         ]);
-        
+
         $campaign->name = $request->input('campaign.name');
         $campaign->category = $request->input('campaign.category');
         $campaign->contact = $request->input('campaign.contact');
@@ -70,8 +76,8 @@ class CampaignEditScreen extends Screen
         $campaign->media = $request->input('campaign.media');
         $campaign->start_date = $request->input('campaign.start_date');
         $campaign->end_date = $request->input('campaign.end_date');
-        $campaign->goal_amount = $request->input('campaign.goal');
-        $campaign->raise_amount = $request->input('campaign.raise');
+        $campaign->goal_amount = $request->input('campaign.goal_amount');
+        $campaign->raise_amount = $request->input('campaign.raise_amount');
         $campaign->save();
 
         return redirect()->route('platform.campaign');
@@ -80,6 +86,7 @@ class CampaignEditScreen extends Screen
     {
         return [
             Layout::rows([
+                
                 Input::make('campaign.name')
                     ->title('Name')
                     ->placeholder('Enter Campaign Name'),
@@ -110,11 +117,12 @@ class CampaignEditScreen extends Screen
                     ->format('d-m-Y')
                     ->placeholder('Select Campaign End Date'),
 
-                Input::make('campaign.goal')
+                Input::make('campaign.goal_amount')
+                ->type('text')
                     ->title('Goal Amount')
                     ->placeholder('Enter Campaign Goal Amount'),
 
-                Input::make('campaign.raise')
+                Input::make('campaign.raise_amount')
                     ->title('Raise Amount')
                     ->placeholder('Enter Campaign Raise Amount'),
 

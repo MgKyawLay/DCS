@@ -38,14 +38,16 @@ class PlatformProvider extends OrchidServiceProvider
                 ->icon('bs.book')
                 ->title('Navigation')
                 ->route(config('platform.index')),
-            
+
             Menu::make('Campaign')
                 ->route('platform.campaign'),
 
-            // Menu::make('Sample Screen')
-            //     ->icon('bs.collection')
-            //     ->route('platform.example')
-            //     ->badge(fn () => 6),
+            Menu::make('News')
+                ->route('platform.news'),
+            Menu::make('Sample Screen')
+                ->icon('bs.collection')
+                ->route('platform.example')
+                ->badge(fn () => 6),
 
             // Menu::make('Form Elements')
             //     ->icon('bs.card-list')

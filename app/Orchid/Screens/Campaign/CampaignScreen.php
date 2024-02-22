@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Orchid\Screens;
+namespace App\Orchid\Screens\Campaign;
 
 use App\Models\Campaign;
+use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Actions\Link;
+use Orchid\Screen\Fields\Group;
 use Orchid\Screen\Screen;
 use Orchid\Screen\TD;
 use Orchid\Support\Facades\Layout;
@@ -46,6 +48,11 @@ class CampaignScreen extends Screen
         ];
     }
 
+    public function remove(Campaign $campaign)
+    {
+        $campaign->delete();
+    }
+
     /**
      * The screen's layout elements.
      *
@@ -55,7 +62,7 @@ class CampaignScreen extends Screen
     {
         return [
             Layout::table('campaigns', [
-                TD::make('name', 'Campaign Name'),
+                TD::make('name'),
                 TD::make('category'),
                 TD::make('contact'),
                 TD::make('description'),
@@ -64,11 +71,19 @@ class CampaignScreen extends Screen
                 TD::make('end_date'),
                 TD::make('goal_amount'),
                 TD::make('raise_amount'),
-                TD::make('Edit')
-                    ->render(fn(Campaign $test) => Link::make('')
-                    ->icon('bs.pencil')
-                    ->route('platform.campaign.edit', $test->id)
-                    )
+                TD::make('Actions')
+                    ->render(function (Campaign $campaign) {
+                        // dd($campaign);
+                        return Group::make([
+                            Button::make('')
+                                ->confirm('After deleting, the task will be gone forever.')
+                                ->icon('bs.trash')
+                                ->method('remove', ['campaign' => $campaign->id]),
+                            Link::make('')
+                                ->icon('bs.pencil')
+                                ->route('platform.campaign.edit', $campaign->id),
+                        ]);
+                    })
             ])
         ];
     }

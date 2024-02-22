@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-use App\Orchid\Screens\CampaignCreateScreen;
-use App\Orchid\Screens\CampaignEditScreen;
-use App\Orchid\Screens\CampaignScreen;
+
+use App\Orchid\Screens\Campaign\CampaignCreateScreen;
+use App\Orchid\Screens\Campaign\CampaignEditScreen;
+use App\Orchid\Screens\Campaign\CampaignScreen;
 use App\Orchid\Screens\Examples\ExampleActionsScreen;
 use App\Orchid\Screens\Examples\ExampleCardsScreen;
 use App\Orchid\Screens\Examples\ExampleChartsScreen;
@@ -14,6 +15,9 @@ use App\Orchid\Screens\Examples\ExampleGridScreen;
 use App\Orchid\Screens\Examples\ExampleLayoutsScreen;
 use App\Orchid\Screens\Examples\ExampleScreen;
 use App\Orchid\Screens\Examples\ExampleTextEditorsScreen;
+use App\Orchid\Screens\News\NewsCreateScreen;
+use App\Orchid\Screens\News\NewsEditScreen;
+use App\Orchid\Screens\News\NewsScreen;
 use App\Orchid\Screens\PlatformScreen;
 use App\Orchid\Screens\Role\RoleEditScreen;
 use App\Orchid\Screens\Role\RoleListScreen;
@@ -105,8 +109,14 @@ Route::screen('/examples/charts', ExampleChartsScreen::class)->name('platform.ex
 Route::screen('/examples/cards', ExampleCardsScreen::class)->name('platform.example.cards');
 
 //Route::screen('idea', Idea::class, 'platform.screens.idea');
+// Camapign screens
 Route::screen('/campaign', CampaignScreen::class)->name('platform.campaign');
 Route::screen('/campaign/create', CampaignCreateScreen::class)
     ->name('platform.campaign.create');
-Route::screen('/campaign/{id}', CampaignEditScreen::class)
+Route::screen('/campaign/{id}/edit', CampaignEditScreen::class)
     ->name('platform.campaign.edit');
+
+// News
+Route::screen('/news', NewsScreen::class)->name('platform.news');
+Route::screen('/news/create', NewsCreateScreen::class)->name('platform.news.create');
+Route::screen('/news/edit/{id}', NewsEditScreen::class)->name('platform.news.edit');
