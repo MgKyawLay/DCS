@@ -13,13 +13,16 @@
                     <div class="text-4xl">
                         {{$item->title}}
                     </div>
-                    <div>
+                    <p>
                         {{$item->content}}
-                    </div>
+                    </p>
                     <img src="{{$item->image_url}}" class="max-w-2xl ">
                 </div>
             </div>
             @endforeach
+        </div>
+        <div class="flex justify-center mt-10">
+            {{$news->links()}}
         </div>
     </div>
 </x-app-layout>
