@@ -3,6 +3,7 @@
 namespace App\Orchid\Screens\News;
 
 use App\Models\News;
+use Illuminate\Support\Facades\Auth;
 use Orchid\Screen\Actions\Button;
 use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Fields\Group;
@@ -58,26 +59,34 @@ class NewsScreen extends Screen
      */
     public function layout(): iterable
     {
-        return [
-            Layout::table('news', [
-                TD::make('title'),
-                TD::make('content'),
-                TD::make('image_url', 'Image')
-                    ->width('100')
-                    ->render(fn(News $news) => "<img src={$news->image_url} 
+        // $isAdmin = empty(Auth::user()?->roles[0]);
+        // dd($isAdmin);
+        if (!empty(Auth::user()?->roles[0]) && Auth::user()?->roles[0]?->name == 'admin') {
+            return [
+                Layout::table('news', [
+                    TD::make('title'),
+                    TD::make('content'),
+                    TD::make('image_url', 'Image')
+                        ->width('100')
+                        ->render(fn(News $news) => "<img src={$news->image_url} 
                     class='mw-100 d-block img-fluid rounded-1 w-100'
                     >"),
-                TD::make('Actions')->render(function (News $news) {
-                    return Group::make([
-                        Link::make('')
-                            ->icon('bs.pencil')
-                            ->route('platform.news.edit', $news->id),
-                        Button::make('')
-                            ->icon('bs.trash')
-                            ->method('delete', ['news' => $news->id])
-                    ])->autoWidth();
-                }),
-            ])
-        ];
+                    TD::make('Actions')->render(function (News $news) {
+                        return Group::make([
+                            Link::make('')
+                                ->icon('bs.pencil')
+                                ->route('platform.news.edit', $news->id),
+                            Button::make('')
+                                ->icon('bs.trash')
+                                ->method('delete', ['news' => $news->id])
+                        ])->autoWidth();
+                    }),
+                ])
+            ];
+        } else {
+            return [
+                Layout::view('NotAllowed')
+            ];
+        }
     }
 }

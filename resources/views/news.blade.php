@@ -10,6 +10,9 @@
             @foreach($news as $item)
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100 flex flex-col gap-5">
+                    <div>
+                        <h1 class="text-slate-500">Created At : {{$item->updated_at->diffForHumans()}}</h1>
+                    </div>
                     <div class="text-4xl">
                         {{$item->title}}
                     </div>
@@ -17,6 +20,11 @@
                         {{$item->content}}
                     </p>
                     <img src="{{$item->image_url}}" class="max-w-2xl ">
+                </div>
+                <div class="flex flex-row mx-5 justify-between text-white">
+                    <button>Like</button>
+                    <button>Comment</button>
+                    <button>Save</button>
                 </div>
             </div>
             @endforeach

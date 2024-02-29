@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Orchid;
 
+use Illuminate\Support\Facades\Auth;
 use Orchid\Platform\Dashboard;
 use Orchid\Platform\ItemPermission;
 use Orchid\Platform\OrchidServiceProvider;
@@ -33,6 +34,7 @@ class PlatformProvider extends OrchidServiceProvider
      */
     public function menu(): array
     {
+        // dd(Auth::user()->roles[0]->name);
         return [
             Menu::make('Get Started')
                 ->icon('bs.book')
@@ -44,10 +46,11 @@ class PlatformProvider extends OrchidServiceProvider
 
             Menu::make('News')
                 ->route('platform.news'),
+
             Menu::make('Sample Screen')
                 ->icon('bs.collection')
                 ->route('platform.example')
-                ->badge(fn () => 6),
+                ->badge(fn() => 6),
 
             // Menu::make('Form Elements')
             //     ->icon('bs.card-list')
@@ -71,17 +74,18 @@ class PlatformProvider extends OrchidServiceProvider
             //     ->route('platform.example.cards')
             //     ->divider(),
 
-            // Menu::make(__('Users'))
-            //     ->icon('bs.people')
-            //     ->route('platform.systems.users')
-            //     ->permission('platform.systems.users')
-            //     ->title(__('Access Controls')),
 
-            // Menu::make(__('Roles'))
-            //     ->icon('bs.shield')
-            //     ->route('platform.systems.roles')
-            //     ->permission('platform.systems.roles')
-            //     ->divider(),
+            Menu::make(__('Users'))
+                ->icon('bs.people')
+                ->route('platform.systems.users')
+                ->permission('platform.systems.users')
+                ->title(__('Access Controls')),
+
+            Menu::make(__('Roles'))
+                ->icon('bs.shield')
+                ->route('platform.systems.roles')
+                ->permission('platform.systems.roles')
+                ->divider(),
 
             // Menu::make('Documentation')
             //     ->title('Docs')
